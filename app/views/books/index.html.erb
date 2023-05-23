@@ -1,0 +1,16 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Books</h1>
+
+<%= form_with url: search_path, method: :get do |form| %>
+  <%= form.label :search, "Search for:" %>
+  <%= form.text_field :search %>
+  <%= form.submit "Search" %>
+<% end %>
+
+
+<div id="books">
+  <%= render 'books/books', books: @books %>
+</div>
+
+<%= link_to "New book", new_book_path %>
