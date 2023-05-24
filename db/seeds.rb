@@ -8,9 +8,9 @@
 
 require 'faker'
 
-100.times do
+10.times do
   Book.create(
-    title: Faker::Book.title,
+    title: "The Mermaids Singing",
     price: Faker::Commerce.price(range: 0..100.0),
     description: Faker::Lorem.paragraph,
     author: Faker::Book.author,

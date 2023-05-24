@@ -1,3 +1,3 @@
 class Book < ApplicationRecord
-    searchkick
+    searchkick word_start: [:name]
 end

@@ -1,6 +1,6 @@
 class SearchController < ApplicationController
     def search
-        @results = Book.search(where: { title: params[:search], match: :text_start })
+        @results = Book.search(params[:search], page: params[:page], per_page: 5)
         
         @results = Book.search('*') if params[:search].blank?
         
