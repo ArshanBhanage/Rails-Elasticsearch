@@ -8,6 +8,21 @@
   <%= form.submit "Search" %>
 <% end %>
 
+<div class="filters">
+  <h4>Sort By:</h4>
+  <ul>
+    <li><%= link_to 'Price (High to Low)', search_path(sort_by: 'price_high_to_low') %></li>
+    <li><%= link_to 'Price (Low to  High)', search_path(sort_by: 'price_low_to_high') %></li>
+  </ul>
+</div>
+
+<div class="filters">
+  <h4>Filter By Year:</h4>
+  <%= form_with url: search_path, method: :get do |form| %>
+    <%= form.select :sort_by, options_for_select((1990..Date.today.year), params[:year]), include_blank: true %>
+    <%= form.submit "Apply Filter" %>
+  <% end %>
+</div>
 
 <div id="books">
   <%= render 'books/books', books: @books %>
