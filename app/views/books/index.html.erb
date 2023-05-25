@@ -1,31 +1,68 @@
-<p style="color: green"><%= notice %></p>
+<%= turbo_frame_tag 'search-results' do %>
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <p class="text-success"><%= notice %></p>
+        <h1>Books</h1>
+      </div>
+    </div>
 
-<h1>Books</h1>
+    <div class="row">
+      <div class="col-12">
+        <%= turbo_frame_tag 'search-form' do %>
+          <%= form_with url: search_path, method: :get, id: 'search-form', class: 'mb-3' do |form| %>
+            <div class="input-group">
+              <%= form.label :search, "Search for:", class: 'input-group-text' %>
+              <%= form.text_field :search, class: 'form-control' %>
+              <%= form.submit "Search", class: 'btn btn-primary' %>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
 
-<%= form_with url: search_path, method: :get do |form| %>
-  <%= form.label :search, "Search for:" %>
-  <%= form.text_field :search %>
-  <%= form.submit "Search" %>
+    <div class="row">
+      <div class="col-12">
+        <div class="filters" data-controller="sort-by">
+          <h4>Sort By:</h4>
+          <ul class="list-unstyled">
+            <li>
+              <%= link_to 'Price (High to Low)', search_path(sort_by: 'price_high_to_low'), class: 'btn btn-link', data: { action: 'click->sort-by#sortBy' } %>
+            </li>
+            <li>
+              <%= link_to 'Price (Low to High)', search_path(sort_by: 'price_low_to_high'), class: 'btn btn-link', data: { action: 'click->sort-by#sortBy' } %>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <div class="filters" data-controller="filter-by-year">
+          <h4>Filter By Year:</h4>
+          <%= form_with url: search_path, method: :get, id: 'filter-form' do |form| %>
+            <div class="input-group">
+              <%= form.select :sort_by, options_for_select((1990..Date.today.year), params[:year]), include_blank: true, class: 'form-select', data: { action: 'change->filter-by-year#filterByYear' } %>
+              <%= form.submit "Apply Filter", class: 'btn btn-primary' %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <div id="books" data-controller="load-more">
+          <%= render 'books/books', books: @books %>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <%= link_to "New book", new_book_path, class: 'btn btn-success mt-3' %>
+      </div>
+    </div>
+  </div>
 <% end %>
-
-<div class="filters">
-  <h4>Sort By:</h4>
-  <ul>
-    <li><%= link_to 'Price (High to Low)', search_path(sort_by: 'price_high_to_low') %></li>
-    <li><%= link_to 'Price (Low to  High)', search_path(sort_by: 'price_low_to_high') %></li>
-  </ul>
-</div>
-
-<div class="filters">
-  <h4>Filter By Year:</h4>
-  <%= form_with url: search_path, method: :get do |form| %>
-    <%= form.select :sort_by, options_for_select((1990..Date.today.year), params[:year]), include_blank: true %>
-    <%= form.submit "Apply Filter" %>
-  <% end %>
-</div>
-
-<div id="books">
-  <%= render 'books/books', books: @books %>
-</div>
-
-<%= link_to "New book", new_book_path %>
