@@ -2,7 +2,7 @@ class SearchController < ApplicationController
     def search
         @results = Book.search(params[:search], page: params[:page], per_page: 5)
         
-        @results = Book.search('*') if params[:search].blank?
+        @results = Book.search('*', page: params[:page], per_page: 5) if params[:search].blank?
         
         if params[:sort_by] == 'price_high_to_low'
             @results = @results.order(price: :desc)
