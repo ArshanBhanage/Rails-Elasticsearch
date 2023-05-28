@@ -9,7 +9,7 @@
 
     <div class="row">
       <div class="col-12">
-        <!--<%= turbo_frame_tag 'search-form' do %>-->
+        <%= turbo_frame_tag 'search-form' do %>
           <%= form_with url: search_path, method: :get, id: 'search-form', class: 'mb-3' do |form| %>
             <div class="input-group">
               <%= form.label :search, "Search for:", class: 'input-group-text' %>
@@ -28,6 +28,11 @@
         </div>
       </div>
     </div>
+    
+    <!--<div id="books">-->
+    <!--  <= render 'books/books', books: @books %>-->
+    <!--</div>-->
+
 
     <div class="row">
       <div class="col-12">

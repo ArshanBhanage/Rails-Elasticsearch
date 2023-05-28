@@ -20,13 +20,23 @@
           <h4>Filter By Year:</h4>
           <%= form_with url: search_path, method: :get, id: 'filter-form' do |form| %>
             <div class="input-group">
-              <%= form.select :sort_by, options_for_select((1990..Date.today.year), params[:year]), include_blank: true, class: 'form-select', data: { action: 'change->filter-by-year#filterByYear' } %>
+              <%= form.select :sort_by_year, options_for_select((1990..Date.today.year), params[:year]), include_blank: true, class: 'form-select', data: { action: 'change->filter-by-year#filterByYear' } %>
               <%= form.submit "Apply Filter", class: 'btn btn-primary' %>
             </div>
           <% end %>
         </div>
       </div>
     </div>
+    
+    <% if @ratings_aggregations.present? %>
+  <h3>Ratings</h3>
+      <% @ratings_aggregations['buckets'].each do |bucket| %>
+    <p>
+        <%= link_to "Rating: #{bucket['key']} (Count: #{bucket['doc_count']})", search_path(rating: bucket['key']) %>
+    </p>
+      <% end %>
+    <% end %>
+
 
 <% books.each do |book| %>
   <div class="card mb-3" style= "margin-top: 2%">
