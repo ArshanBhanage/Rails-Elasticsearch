@@ -1,5 +1,20 @@
 <div class="row">
       <div class="col-12">
+        <%= turbo_frame_tag 'search-form' do %>
+          <%= form_with url: search_path, method: :get, id: 'search-form', class: 'mb-3' do |form| %>
+            <div class="input-group">
+              <%= form.label :search, "Search for:", class: 'input-group-text' %>
+              <%= form.text_field :search, class: 'form-control' %>
+              <%= form.select :sort_by_year, options_for_select((1990..Date.today.year), params[:year]), include_blank: true, class: 'form-select', data: { action: 'change->filter-by-year#filterByYear' } %>
+              <%= form.submit "Search", class: 'btn btn-primary' %>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+
+<div class="row">
+      <div class="col-12">
         <div class="filters" data-controller="sort-by">
           <h4>Sort By:</h4>
           <ul class="list-unstyled">
@@ -32,10 +47,11 @@
   <h3>Ratings</h3>
       <% @ratings_aggregations['buckets'].each do |bucket| %>
     <p>
-        <%= link_to "Rating: #{bucket['key']} (Count: #{bucket['doc_count']})", search_path(rating: bucket['key']) %>
+        <%= link_to "Rating: #{bucket['key']} (Count: #{bucket['doc_count']})", search_path(ratings: bucket['key']) %>
     </p>
       <% end %>
     <% end %>
+
 
 
 <% books.each do |book| %>
