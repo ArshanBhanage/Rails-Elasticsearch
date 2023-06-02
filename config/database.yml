@@ -22,4 +22,6 @@ test:
 
 production:
   <<: *default
+  url: <%= ENV["DATABASE_URL"]  %>
   database: db/production.sqlite3
+  password: <%= ENV["ELASTICSEARCH_DATABASE_URL"]  %>
