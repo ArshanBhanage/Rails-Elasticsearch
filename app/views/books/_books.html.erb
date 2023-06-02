@@ -1,3 +1,27 @@
+<% if @ratings_aggregations.present? %>
+  <h3>Ratings</h3>
+      <% @ratings_aggregations['buckets'].each do |bucket| %>
+    <p>
+        <%= link_to "Rating: #{bucket['key']} (Count: #{bucket['doc_count']})", search_path(ratings: bucket['key']) %>
+    </p>
+      <% end %>
+<% end %>
+    
+<% if @author_aggregations.present? %>    
+<div class="row">
+  <div class="col-12">
+    <div class="filters" data-controller="filter-by-author">
+      <h4>Filter By Author:</h4>
+      <% @author_aggregations['buckets'].each do |bucket| %>
+        <%= link_to "Author: #{bucket['key']} (Count: #{bucket['doc_count']})", request.params.merge(author: bucket["key"]) %>
+        <!--<= link_to bucket['key'], search_path(selected_genre: bucket['key']), class: 'btn btn-link', data: { action: 'click->filter-by-genre#filterByGenre' } %>-->
+      <% end %>
+    </div>
+  </div>
+</div>    
+<% end %>
+
+
 <% books.each do |book| %>
   <div class="card mb-3" style= "margin-top: 2%">
     <div class="card-body">
